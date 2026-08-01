@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #0d1622;
+        font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    #bg {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background-color: #0d1622;
+        /* EDIT ME: put your generated background image URL here */
+        background-image: url('BACKGROUND_IMAGE_URL_HERE');
+        background-size: cover;
+        background-position: center;
+    }
+
+    #bg-overlay {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient( 180deg, rgba(13,22,34,.35) 0%, rgba(13,22,34,.65) 45%, #0d1622 100% ),
+                    radial-gradient( ellipse at 50% 40%, rgba(22,35,58,.2) 0%, rgba(13,22,34,.55) 70% );
+        pointer-events: none;
+    }
+
+    #grid {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        opacity: .35;
+    }
+
+    #glow {
+        position: fixed;
+        left: 50%;
+        top: 42%;
+        width: 900px;
+        height: 900px;
+        transform: translate( -50%, -50% );
+        background: radial-gradient( circle, rgba(64,156,255,.16) 0%, rgba(64,156,255,0) 60% );
+        pointer-events: none;
+        animation: pulse 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: .7; transform: translate( -50%, -50% ) scale( 1 ); }
+        50%      { opacity: 1;  transform: translate( -50%, -50% ) scale( 1.06 ); }
+    }
+
+    #content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate( -50%, -50% );
+        width: 640px;
+        text-align: center;
+    }
+
+    #brand {
+        font-size: 40px;
+        font-weight: 700;
+        letter-spacing: 6px;
+        color: #eaf2ff;
+        text-shadow: 0 0 30px rgba(64,156,255,.55);
+        white-space: nowrap;
+        margin-bottom: 6px;
+    }
+
+    #brand span {
+        color: #409cff;
+    }
+
+    #tagline {
+        font-size: 12px;
+        letter-spacing: 4px;
+        color: #5b7699;
+        text-transform: uppercase;
+        margin-bottom: 26px;
+    }
+
+    #counter {
+        font-variant-numeric: tabular-nums;
+        margin-bottom: 14px;
+    }
+
+    #counter-digits {
+        display: inline-block;
+        font-size: 64px;
+        font-weight: 700;
+        color: #ffffff;
+        min-width: 130px;
+        text-align: right;
+        text-shadow: 0 0 18px rgba(64,156,255,.35);
+    }
+
+    #counter-digits.bump {
+        animation: bump .28s ease;
+    }
+
+    @keyframes bump {
+        0%   { transform: scale( 1 );    color: #409cff; }
+        40%  { transform: scale( 1.08 ); color: #7ec2ff; }
+        100% { transform: scale( 1 );    color: #ffffff; }
+    }
+
+    #percent-sign {
+        font-size: 26px;
+        font-weight: 600;
+        color: #409cff;
+    }
+
+    #bar-track {
+        width: 420px;
+        height: 6px;
+        border-radius: 6px;
+        background: rgba(255,255,255,.08);
+        overflow: hidden;
+        position: relative;
+        margin: 0 auto 20px auto;
+    }
+
+    #bar-fill {
+        height: 100%;
+        width: 0%;
+        border-radius: 6px;
+        background: linear-gradient( 90deg, #2f7fe0, #409cff, #7ec2ff );
+        background-size: 200% 100%;
+        transition: width .35s ease;
+        animation: shimmer 2.2s linear infinite;
+    }
+
+    @keyframes shimmer {
+        0%   { background-position: 0% 0%; }
+        100% { background-position: -200% 0%; }
+    }
+
+    #status {
+        font-size: 13px;
+        color: #7f97b8;
+        letter-spacing: .5px;
+        height: 16px;
+    }
+
+    #meta {
+        position: fixed;
+        left: 26px;
+        bottom: 20px;
+        font-size: 12px;
+        color: #43587a;
+        line-height: 1.6;
+        text-align: left;
+    }
+
+    #meta b {
+        color: #90aecf;
+    }
+
+    #music {
+        position: fixed;
+        right: 26px;
+        bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 16px;
+        background: rgba(17,27,43,.72);
+        border: 1px solid rgba(64,156,255,.25);
+        border-radius: 10px;
+    }
+
+    #music-eq {
+        display: flex;
+        align-items: flex-end;
+        gap: 3px;
+        height: 18px;
+        width: 20px;
+    }
+
+    #music-eq span {
+        width: 3px;
+        background: #409cff;
+        border-radius: 2px;
+        animation: eq 1s ease-in-out infinite;
+    }
+
+    #music-eq span:nth-child(1) { height: 6px;  animation-delay: 0s; }
+    #music-eq span:nth-child(2) { height: 14px; animation-delay: .15s; }
+    #music-eq span:nth-child(3) { height: 9px;  animation-delay: .3s; }
+    #music-eq span:nth-child(4) { height: 16px; animation-delay: .45s; }
+
+    @keyframes eq {
+        0%, 100% { transform: scaleY( .35 ); }
+        50%      { transform: scaleY( 1 ); }
+    }
+
+    #music-info {
+        line-height: 1.35;
+    }
+
+    #music-track {
+        font-size: 13px;
+        color: #eaf2ff;
+        font-weight: 600;
+    }
+
+    #music-artist {
+        font-size: 11px;
+        color: #7f97b8;
+    }
+</style>
+</head>
+<body>
+
+    <div id="bg"></div>
+    <div id="bg-overlay"></div>
+    <canvas id="grid"></canvas>
+    <div id="glow"></div>
+
+    <div id="content">
+        <div id="brand">𝗡𝗮𝘆𝗸𝗼𝗿𝗮<span>𝗥𝗣</span></div>
+        <div id="tagline">loading session</div>
+
+        <div id="counter">
+            <span id="counter-digits">0</span>
+            <span id="percent-sign">%</span>
+        </div>
+
+        <div id="bar-track">
+            <div id="bar-fill"></div>
+        </div>
+
+        <div id="status">Инициализация...</div>
+    </div>
+
+    <div id="meta">
+        <div><b id="meta-map">-</b></div>
+        <div id="meta-gm">-</div>
+    </div>
+
+    <div id="music">
+        <div id="music-eq"><span></span><span></span><span></span><span></span></div>
+        <div id="music-info">
+            <!-- EDIT ME: track name / artist shown to the player -->
+            <div id="music-track">Track Name</div>
+            <div id="music-artist">Artist</div>
+        </div>
+    </div>
+
+    <!-- EDIT ME: put your hosted mp3 URL here -->
+    <audio id="bgm" src="MUSIC_URL_HERE" autoplay loop></audio>
+
+<script>
+    // ---- animated background grid -------------------------------------
+    (function() {
+        var canvas = document.getElementById( 'grid' );
+        var ctx = canvas.getContext( '2d' );
+        var w, h, offset = 0;
+
+        function resize() {
+            w = canvas.width = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        window.addEventListener( 'resize', resize );
+        resize();
+
+        function draw() {
+            ctx.clearRect( 0, 0, w, h );
+            ctx.strokeStyle = 'rgba(64,156,255,0.06)';
+            ctx.lineWidth = 1;
+
+            var gap = 46;
+            offset = ( offset + 0.06 ) % gap;
+
+            for ( var x = -gap; x < w + gap; x += gap ) {
+                ctx.beginPath();
+                ctx.moveTo( x + offset, 0 );
+                ctx.lineTo( x + offset, h );
+                ctx.stroke();
+            }
+
+            for ( var y = -gap; y < h + gap; y += gap ) {
+                ctx.beginPath();
+                ctx.moveTo( 0, y + offset );
+                ctx.lineTo( w, y + offset );
+                ctx.stroke();
+            }
+
+            requestAnimationFrame( draw );
+        }
+        draw();
+    })();
+
+    // ---- background music -------------------------------------------
+    (function() {
+        var bgm = document.getElementById( 'bgm' );
+        bgm.volume = 0.45;
+
+        var tryPlay = function() {
+            var p = bgm.play();
+            if ( p && p.catch ) {
+                p.catch( function() {
+                    // Autoplay blocked — retry on the first user input.
+                    var resume = function() {
+                        bgm.play();
+                        document.removeEventListener( 'click', resume );
+                        document.removeEventListener( 'keydown', resume );
+                    };
+                    document.addEventListener( 'click', resume );
+                    document.addEventListener( 'keydown', resume );
+                } );
+            }
+        };
+        tryPlay();
+    })();
+
+    // ---- animated percentage counter -----------------------------------
+    var displayed = 0;
+    var target = 2;
+    var digitsEl = document.getElementById( 'counter-digits' );
+    var barEl = document.getElementById( 'bar-fill' );
+    var lastShown = -1;
+
+    function tick() {
+        displayed += ( target - displayed ) * 0.07;
+        if ( target - displayed < 0.05 ) displayed = target;
+
+        var rounded = Math.max( 0, Math.min( 100, Math.round( displayed ) ) );
+
+        if ( rounded !== lastShown ) {
+            lastShown = rounded;
+            digitsEl.textContent = rounded;
+            barEl.style.width = rounded + '%';
+
+            digitsEl.classList.remove( 'bump' );
+            void digitsEl.offsetWidth; // restart css animation
+            digitsEl.classList.add( 'bump' );
+        }
+
+        requestAnimationFrame( tick );
+    }
+    tick();
+
+    // Slow, believable fallback creep so it never looks stuck at 0
+    // even before the engine sends any real status/file events.
+    setInterval( function() {
+        if ( target < 92 ) target += Math.random() * 2.2;
+    }, 400 );
+
+    // ---- engine callbacks ------------------------------------------------
+    // Called by the engine with server/session info.
+    window.GameDetails = function( serverName, serverURL, mapName, maxPlayers, steamID, gamemode ) {
+        document.getElementById( 'meta-map' ).textContent = mapName || '-';
+        document.getElementById( 'meta-gm' ).textContent = gamemode || '';
+    };
+
+    // Called repeatedly by the engine with a short status string
+    // (e.g. "Spawning entities", "Precaching models").
+    window.SetStatusChanged = function( status ) {
+        document.getElementById( 'status' ).textContent = status || '';
+
+        var match = /([0-9]+)\s*%/.exec( status || '' );
+        if ( match ) {
+            target = parseInt( match[ 1 ], 10 );
+        } else if ( target < 95 ) {
+            target += 4 + Math.random() * 6;
+        }
+    };
+
+    // Called when downloading workshop/server content — gives us a
+    // real, accurate percentage instead of the guessed fallback.
+    window.SetFilesTotal = function( total ) { window._filesTotal = total; };
+    window.SetFilesNeeded = function( needed ) {
+        var total = window._filesTotal || 0;
+        if ( total > 0 ) {
+            target = Math.max( 0, Math.min( 100, 100 * ( 1 - ( needed / total ) ) ) );
+        }
+    };
+</script>
+
+</body>
+</html>
