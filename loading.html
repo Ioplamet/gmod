@@ -43,21 +43,22 @@
     }
 
     #content {
-        position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 22px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate( -50%, -50% );
+        width: 640px;
+        text-align: center;
     }
 
     #brand {
-        font-size: 46px;
+        font-size: 40px;
         font-weight: 700;
-        letter-spacing: 14px;
+        letter-spacing: 6px;
         color: #eaf2ff;
         text-shadow: 0 0 30px rgba(64,156,255,.55);
+        white-space: nowrap;
+        margin-bottom: 6px;
     }
 
     #brand span {
@@ -65,21 +66,20 @@
     }
 
     #tagline {
-        margin-top: -14px;
         font-size: 12px;
         letter-spacing: 4px;
         color: #5b7699;
         text-transform: uppercase;
+        margin-bottom: 26px;
     }
 
     #counter {
-        display: flex;
-        align-items: baseline;
-        gap: 4px;
         font-variant-numeric: tabular-nums;
+        margin-bottom: 14px;
     }
 
     #counter-digits {
+        display: inline-block;
         font-size: 64px;
         font-weight: 700;
         color: #ffffff;
@@ -111,6 +111,7 @@
         background: rgba(255,255,255,.08);
         overflow: hidden;
         position: relative;
+        margin: 0 auto 20px auto;
     }
 
     #bar-fill {
@@ -142,6 +143,7 @@
         font-size: 12px;
         color: #43587a;
         line-height: 1.6;
+        text-align: left;
     }
 
     #meta b {
@@ -156,7 +158,7 @@
     <div id="glow"></div>
 
     <div id="content">
-        <div id="brand">ONY<span>X</span></div>
+        <div id="brand">𝗡𝗮𝘆𝗸𝗼𝗿𝗮<span>𝗥𝗣</span></div>
         <div id="tagline">loading session</div>
 
         <div id="counter">
